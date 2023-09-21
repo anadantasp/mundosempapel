@@ -1,11 +1,8 @@
 
 package br.com.fiap.mundosempapel.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,24 +16,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fiap.mundosempapel.model.Produto;
 import br.com.fiap.mundosempapel.repository.ProdutoRepository;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
+@Slf4j
 public class ProdutoController {
-
-    Logger log = LoggerFactory.getLogger(getClass());
-
-    List<Produto> produtos = new ArrayList<>();
 
     @Autowired
     ProdutoRepository produtoRepository;
     
     @GetMapping("/produtos")
     public List<Produto> index(){
+        log.info("Buscando todas as categorias");
         return produtoRepository.findAll();
     }
 
     @PostMapping("/produtos")
-    public ResponseEntity<Produto> create(@RequestBody Produto produto){
+    public ResponseEntity<Produto> create(@RequestBody @Valid Produto produto){
        log.info("Cadastrando produtos - " + produto);
        produtoRepository.save(produto);
        return ResponseEntity.status(HttpStatus.CREATED).body(produto);

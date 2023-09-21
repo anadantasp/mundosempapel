@@ -1,10 +1,7 @@
 package br.com.fiap.mundosempapel.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,24 +15,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fiap.mundosempapel.model.Categoria;
 import br.com.fiap.mundosempapel.repository.CategoriaRepository;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
+@Slf4j
 public class CategoriaController {
-
-    Logger log = LoggerFactory.getLogger(getClass());
-
-    List<Categoria> categorias = new ArrayList<>();
 
     @Autowired
     CategoriaRepository categoriaRepository;
 
     @GetMapping("/categorias")
     public List<Categoria> index(){
+        log.info("Buscando todas as categorias");
         return categoriaRepository.findAll();
     }
 
     @PostMapping("/categorias")
-    public ResponseEntity<Categoria> create(@RequestBody Categoria categoria){
+    public ResponseEntity<Categoria> create(@RequestBody @Valid Categoria categoria){
         log.info("cadastrando categoria " + categoria);
         categoriaRepository.save(categoria);
         return ResponseEntity.status(HttpStatus.CREATED).body(categoria);
