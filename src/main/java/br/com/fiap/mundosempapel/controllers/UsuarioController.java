@@ -16,9 +16,11 @@ import br.com.fiap.mundosempapel.model.dto.UsuarioResponse;
 import br.com.fiap.mundosempapel.repository.UsuarioRepository;
 import br.com.fiap.mundosempapel.service.TokenService;
 import jakarta.validation.Valid;
+import lombok.extern.log4j.Log4j2;
 
 
 @RestController
+@Log4j2
 public class UsuarioController {
 
     @Autowired
@@ -35,6 +37,7 @@ public class UsuarioController {
 
     @PostMapping("/login")
     public ResponseEntity<Token> login(@RequestBody Credenciais credenciais){
+        log.info(credenciais);
         authManager.authenticate(credenciais.toAuthentication());
         return ResponseEntity.ok( tokenService.generateToken(credenciais.email()) );
     }
